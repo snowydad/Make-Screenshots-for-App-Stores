@@ -14,15 +14,15 @@ This is a script for Adobe Photoshop to to automatically save localized screensh
 Here's the example file structure you'll get:
 ```
 my_screenshots_folder/
-      |____/iPhone 6 Plus/
-      |       |____/EN/
-      |       |     |____/my_screenshot.jpg
-      |       |____/DE/
-      |             |____/my_screenshot.jpg
-      |____/iPhone 6/
-      |       |____/EN/
-      |       |     |____/my_screenshot.jpg
-      |       |____/DE/
-      |             |____/my_screenshot.jpg
-      |____/my_screenshot.psd
-```     
+      ├────/iPhone 6 Plus/
+      │       ├────/EN/
+      │       |     ├────/my_screenshot.jpg
+      |       └────/DE/
+      |             └────/my_screenshot.jpg
+      ├────/iPhone 6/
+      |       ├────/EN/
+      |       |     └────/my_screenshot.jpg
+      |       └────/DE/
+      |             └────/my_screenshot.jpg
+      └────/my_screenshot.psd
+```          
