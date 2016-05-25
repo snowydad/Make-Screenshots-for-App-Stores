@@ -14,8 +14,9 @@ var device = {
     }; 
 var selectedDevices = []; // devices selected by USER
 
-var knownLanguages = ['EN','RU','DE','FR','NL','ES']; // known languages
+var knownLanguages = ['EN','RU','DE','FR','NL','ES','IT']; // known languages
 var fileLanguages = []; // languages exist in the current file
+var fileLanguagesSets = []; // store all the language layer sets
 var selectedLanguages = []; // languages selected by USER
 
 var dialogResult = "No result yet...";
@@ -94,7 +95,7 @@ function showDialog(fileLanguages){
                 selectedLanguages.push (fileLanguages[i]);
                 }
             }
-        //alert (selectedLanguages);
+        alert (selectedLanguages);
         
         if (selectedDevices.length > 0 && selectedLanguages.length > 0){
             dialogResult = "OK";
@@ -119,21 +120,37 @@ function showDialog(fileLanguages){
 //Detect all the known languages from knownLanguages list, 
 //create exist languages list - fileLanguages
 ///////////////////////////////////////////////////////////////////////////////
-function detectLanguages(){    
+function detectLanguages(file){    
     var layerSets = file.layerSets.length;
-    var x = 0; // index for fileLanguages[] to skip non language layer sets
+    var alreadyExists;
     //alert("Number of layer sets: " + layerSets);
     for (var i = 0; i < layerSets; i++){
-        //alert(file.layerSets[i]);
+        //alert(i+file);
         // check known languages:
         for (var j = 0; j < knownLanguages.length; j++){
             if (file.layerSets[i].name == knownLanguages[j]){
-                fileLanguages[x] = file.layerSets[i].name; 
-                x++;
+                //fileLanguages[x] = file.layerSets[i].name; 
+                    
+                fileLanguagesSets.push(file.layerSets[i]); // store all the language layer sets
+                //alert(fileLanguagesSets.length +"\n"+ fileLanguages.length);
+                for (var k = 0; k < fileLanguagesSets.length - 1; k++){// check if we already have some language
+                    if (fileLanguages[k] == file.layerSets[i].name){
+                        alreadyExists = true; 
+                        break;
+                        //alert("+" + fileLanguages[k] +" == "+ file.layerSets[i].name)
+                        //fileLanguages.push(file.layerSets[i].name); // store languages exist in the file
+                        }else{
+                            alreadyExists = false;
+                            //alert("-"+ fileLanguages[k] +" != "+ file.layerSets[i].name)
+                            }
+                    }
+                if (!alreadyExists) fileLanguages.push(file.layerSets[i].name); // add language if it does not exist in the list yet
                 }
             }
-        // TODO: detect language layerSets in layerSets:
-        //if (file.layerSets[i].layerSets.length > 0) alert(file.layerSets[i] +" has "+ file.layerSets[i].layerSets.length +"layer sets");        
+            // TODO: detect nested language layerSets:
+            if (file.layerSets[i].layerSets.length > 0){ 
+                detectLanguages(file.layerSets[i]);
+                }
         }
     }
 
@@ -164,10 +181,17 @@ function makeLanguageFolders(fileDeviceNeeded){
 // Save localized images to appropriate folders
 ///////////////////////////////////////////////////////////////////////////////
 function saveLocalizedImages(fileLanguageNeeded, fileDeviceNeeded){
-    for (var i = 0; i < fileLanguages.length; i++){
-        file.layerSets.getByName(fileLanguages[i]).visible = false; // turn off all the language layer sets
+    // turn off all the language layer sets:
+    for (var i = 0; i < fileLanguagesSets.length; i++){
+        if (fileLanguagesSets[i].name !== fileLanguageNeeded){
+            fileLanguagesSets[i].visible = false; // turn off all the language layer sets
+            }else{
+                fileLanguagesSets[i].visible = true;// turn on the necessary language layer sets:
+                }
+        //alert(fileLanguagesSets[i].visible)
         }
-    file.layerSets.getByName(fileLanguageNeeded).visible = true; // turn on the necessary language layer sets    
+    
+        //file.layerSets.getByName(fileLanguageNeeded).visible = true; 
     var saveToFile = new File (file.path + "/" + fileDeviceNeeded  + "/" + fileLanguageNeeded + "/" + fileName + ".jpg"); // file name and path 
     file.flatten();
     //set the appropriate size:
@@ -193,10 +217,10 @@ if (app.documents.length > 0){
     checkSize();
     
     // Detect all the known languages in the file first:
-    detectLanguages();
+    detectLanguages(file);
     
     // Show what we have. Should be replaced with dialog
-    //alert ("Languages ("+ fileLanguages.length +"): " + fileLanguages);
+    alert ("Languages ("+ fileLanguages.length +"): " + fileLanguages +"\n"+fileLanguagesSets);
 
     // Do we have known languages? 
     if (fileLanguages.length > 0){
