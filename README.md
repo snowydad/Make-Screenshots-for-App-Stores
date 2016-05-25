@@ -25,4 +25,7 @@ my_screenshots_folder/
       |       └────/DE/
       |             └────/my_screenshot.jpg
       └────/my_screenshot.psd
-```          
+```       
+### ToDo:
+1. Add multiple locale Groups support (only one Group at the moment)
+2. Add nested Groups
