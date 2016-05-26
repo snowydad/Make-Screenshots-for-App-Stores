@@ -7,7 +7,7 @@ This is a script for Adobe Photoshop to to automatically save localized screensh
 1. Get Make `Screenshots.jsx`
 2. Place it into  Photoshop scripts folder (`~\Adobe Photoshop CS6/Presets/Scripts/`)
 3. Launch Photoshop
-4. Open your appropriately structured file (see the sample)
+4. Open your appropriately structured file (see `sample.psd`)
 5. Run script (`File->Scripts->Make Screenshots`)
 
 ## You will get
