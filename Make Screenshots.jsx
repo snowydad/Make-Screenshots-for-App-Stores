@@ -101,7 +101,7 @@ function showDialog(fileLanguages){
                 selectedLanguages.push (fileLanguages[i]);
                 }
             }
-        alert (selectedLanguages);
+        //alert (selectedLanguages);
         
         if (selectedDevices.length > 0 && selectedLanguages.length > 0){
             dialogResult = "OK";
