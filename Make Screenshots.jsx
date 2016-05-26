@@ -1,5 +1,12 @@
-﻿// This script will save each localized image to a separate file and folder.
-// Localization is based on the layer sets names.
+﻿// Copyright 2016. Aliasworlds. All rights reserved.
+// This script will save each localized image to a separate file and folder.
+// Locales is based on the layer groups names.
+
+/*
+@@@BUILDINFO@@@ Make Screenshots.jsx 1.0
+*/
+
+// enable double clicking from the Macintosh Finder or the Windows Explorer
 #target photoshop
 
 // known devices:
@@ -32,7 +39,7 @@ function checkSize(){
     device['As is'].height = file.height;
     if (file.width > file.height) {
         orientation = "Landscapte";
-        // TODO: swap height and width in var device
+        // Swap height and width in var device
         for (var i in device){
             if(i != 'As is'){
                 var tempHeight = device[i].width;
@@ -87,7 +94,6 @@ function showDialog(fileLanguages){
                 selectedDevices.push (i);
                 }
             }
-        //alert (selectedDevices);
         // check selected laguages:
         for (var i in checkedLanguage){
             // create list of selected languages
@@ -123,31 +129,23 @@ function showDialog(fileLanguages){
 function detectLanguages(file){    
     var layerSets = file.layerSets.length;
     var alreadyExists;
-    //alert("Number of layer sets: " + layerSets);
     for (var i = 0; i < layerSets; i++){
-        //alert(i+file);
         // check known languages:
         for (var j = 0; j < knownLanguages.length; j++){
             if (file.layerSets[i].name == knownLanguages[j]){
-                //fileLanguages[x] = file.layerSets[i].name; 
-                    
                 fileLanguagesSets.push(file.layerSets[i]); // store all the language layer sets
-                //alert(fileLanguagesSets.length +"\n"+ fileLanguages.length);
                 for (var k = 0; k < fileLanguagesSets.length - 1; k++){// check if we already have some language
                     if (fileLanguages[k] == file.layerSets[i].name){
                         alreadyExists = true; 
                         break;
-                        //alert("+" + fileLanguages[k] +" == "+ file.layerSets[i].name)
-                        //fileLanguages.push(file.layerSets[i].name); // store languages exist in the file
                         }else{
                             alreadyExists = false;
-                            //alert("-"+ fileLanguages[k] +" != "+ file.layerSets[i].name)
                             }
                     }
                 if (!alreadyExists) fileLanguages.push(file.layerSets[i].name); // add language if it does not exist in the list yet
                 }
             }
-            // TODO: detect nested language layerSets:
+            // Detect nested language layerSets:
             if (file.layerSets[i].layerSets.length > 0){ 
                 detectLanguages(file.layerSets[i]);
                 }
@@ -159,7 +157,6 @@ function detectLanguages(file){
 ///////////////////////////////////////////////////////////////////////////////
 function makeDeviceFolders(){
     for (var i = 0; i < selectedDevices.length; i++){
-        //alert (selectedDevices[i] + ": " + device[selectedDevices[i]].width + "x" + device[selectedDevices[i]].height);
         var deviceFolder = new Folder(file.path + "/" + selectedDevices[i] + "/");
         if(!deviceFolder.exists)  deviceFolder.create(); // create device folder
         makeLanguageFolders(selectedDevices[i]); // go make language folders inside
@@ -188,10 +185,7 @@ function saveLocalizedImages(fileLanguageNeeded, fileDeviceNeeded){
             }else{
                 fileLanguagesSets[i].visible = true;// turn on the necessary language layer sets:
                 }
-        //alert(fileLanguagesSets[i].visible)
         }
-    
-        //file.layerSets.getByName(fileLanguageNeeded).visible = true; 
     var saveToFile = new File (file.path + "/" + fileDeviceNeeded  + "/" + fileLanguageNeeded + "/" + fileName + ".jpg"); // file name and path 
     file.flatten();
     //set the appropriate size:
@@ -220,11 +214,11 @@ if (app.documents.length > 0){
     detectLanguages(file);
     
     // Show what we have. Should be replaced with dialog
-    alert ("Languages ("+ fileLanguages.length +"): " + fileLanguages +"\n"+fileLanguagesSets);
+    //alert ("Languages ("+ fileLanguages.length +"): " + fileLanguages +"\n"+fileLanguagesSets);
 
-    // Do we have known languages? 
+    // Do we have known languages?:
     if (fileLanguages.length > 0){
-        // Show dialog for USER input
+        // Show dialog for USER input:
         showDialog(fileLanguages);
         // Make folders for each device, then make folders for each language inside, then save files:
         if (dialogResult === "OK"){
@@ -232,7 +226,6 @@ if (app.documents.length > 0){
             // revert to initial state:
             file.activeHistoryState = savedFileState; 
             // Show what we have done:
-            //alert ("Done for: " + fileLanguages + "\n" + selectedLanguages);
             alert ("Done for:" + "\nLanguages: " + selectedLanguages + "\nDevices: " + selectedDevices);
             }
         }else{
@@ -242,5 +235,4 @@ if (app.documents.length > 0){
     }else{
     alert ("You must have a document open.\nOpen a document and try again.", "Error")
     }
-
 
