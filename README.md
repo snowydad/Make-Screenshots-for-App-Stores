@@ -1,5 +1,5 @@
 # Make Screenshots for App Stores
-This is a script for Adobe Photoshop to to automatically save localized screenshots for App Stores.
+Automate making localized screenshots for App Stores! This is a script for Adobe Photoshop to do this routine job.
 
 ![Dialog](make-screenshots-dialog.png)
 
