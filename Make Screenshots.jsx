@@ -53,6 +53,24 @@ function checkSize(){
     }
 
 ///////////////////////////////////////////////////////////////////////////////
+// Progess pop-up:
+///////////////////////////////////////////////////////////////////////////////
+/*function showProgress(s){
+    var progressWindow = new Window("window", "Detecting Locales...");
+    progressWindow.preferredSize.width = 300;
+    progressWindow.orientation = 'column';
+    progressWindow.alignChildren = 'left';
+    progressWindow.add("statictext", undefined, "Processing...");
+    if (s) progressWindow.show();
+    alert(s)
+    }*/
+var progress = new Window ("window", "Detecting Locales")
+progress.preferredSize.width = 300;
+progress.orientation = 'column';
+progress.alignChildren = 'left';
+progress.add("statictext", undefined, "Processing...");
+
+///////////////////////////////////////////////////////////////////////////////
 // Device and Language selection Dialog:
 ///////////////////////////////////////////////////////////////////////////////
 function showDialog(fileLanguages){
@@ -211,7 +229,10 @@ if (app.documents.length > 0){
     checkSize();
     
     // Detect all the known languages in the file first:
+    progress.show();
+     
     detectLanguages(file);
+    progress.close();
     
     // Show what we have. Should be replaced with dialog
     //alert ("Languages ("+ fileLanguages.length +"): " + fileLanguages +"\n"+fileLanguagesSets);
