@@ -55,15 +55,6 @@ function checkSize(){
 ///////////////////////////////////////////////////////////////////////////////
 // Progess pop-up:
 ///////////////////////////////////////////////////////////////////////////////
-/*function showProgress(s){
-    var progressWindow = new Window("window", "Detecting Locales...");
-    progressWindow.preferredSize.width = 300;
-    progressWindow.orientation = 'column';
-    progressWindow.alignChildren = 'left';
-    progressWindow.add("statictext", undefined, "Processing...");
-    if (s) progressWindow.show();
-    alert(s)
-    }*/
 var progress = new Window ("window", "Detecting Locales")
 progress.preferredSize.width = 300;
 progress.orientation = 'column';
