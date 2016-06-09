@@ -30,6 +30,7 @@ var dialogResult = "No result yet...";
 var orientation = "Not clear yet...";// landscapte or portrait
 var checkedDevice = [];
 var checkedLanguage = [];  
+var checkedFlatMode = false; // no folders for locales
 
 ///////////////////////////////////////////////////////////////////////////////
 // Check image size and reverse height:
@@ -88,6 +89,8 @@ function showDialog(fileLanguages){
         checkedLanguage[i] = dialog.panelLanguages.add("checkbox", undefined, fileLanguages[i]);
         checkedLanguage[i].value = true;
         }
+    
+    checkedFlatMode = dialog.add("checkbox", undefined, "Don't create locale folders (doesn't work yet)"); // Flat Mode check box - don't create folders
     
     dialog.btnGroup = dialog.add("group"); 
     dialog.btnGroup.orientation = 'row';
@@ -177,14 +180,19 @@ function makeDeviceFolders(){
 ///////////////////////////////////////////////////////////////////////////////
 function makeLanguageFolders(fileDeviceNeeded){
     for (var i = 0; i < selectedLanguages.length; i++){
-        var languageFolder = new Folder(file.path + "/" + fileDeviceNeeded + "/" + selectedLanguages[i] + "/");
-        if(!languageFolder.exists)  languageFolder.create(); // create language folder
-        saveLocalizedImages(selectedLanguages[i], fileDeviceNeeded); // go save localized image inside
+        if(!checkedFlatMode.value){ // if not 'flat mode'
+            var languageFolder = new Folder(file.path + "/" + fileDeviceNeeded + "/" + selectedLanguages[i] + "/");
+            if(!languageFolder.exists)  languageFolder.create(); // create language folder
+            saveLocalizedImages(selectedLanguages[i], fileDeviceNeeded); // go save localized image inside
+            } else{
+                // flat mode: save files with suffixes in one common output(device) folder:
+                saveLocalizedImagesFlatMode(selectedLanguages[i], fileDeviceNeeded); // go save localized image inside one output folder
+                }
         }
     }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Save localized images to appropriate folders
+// Save localized images to appropriate output/locale folders
 ///////////////////////////////////////////////////////////////////////////////
 function saveLocalizedImages(fileLanguageNeeded, fileDeviceNeeded){
     // turn off all the language layer sets:
@@ -201,6 +209,30 @@ function saveLocalizedImages(fileLanguageNeeded, fileDeviceNeeded){
     file.resizeImage(device[fileDeviceNeeded].width, device[fileDeviceNeeded].height);
     var jpegOptions = new JPEGSaveOptions();
     jpegOptions.quality = device[fileDeviceNeeded].quality;
+    //save:
+    file.saveAs (saveToFile, jpegOptions, true, Extension.LOWERCASE); // save a copy
+    file.activeHistoryState = savedFileState; 
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+// Save localized images with suffixes to one common output folder
+///////////////////////////////////////////////////////////////////////////////
+function saveLocalizedImagesFlatMode(fileLanguageNeeded, fileDeviceNeeded){
+    // turn off all the language layer sets:
+    for (var i = 0; i < fileLanguagesSets.length; i++){
+        if (fileLanguagesSets[i].name !== fileLanguageNeeded){
+            fileLanguagesSets[i].visible = false; // turn off all the language layer sets
+            }else{
+                fileLanguagesSets[i].visible = true;// turn on the necessary language layer sets:
+                }
+        }
+    var saveToFile = new File (file.path + "/" + fileDeviceNeeded  + "/" + fileName + "-" +fileLanguageNeeded.toLowerCase() + ".jpg"); // file name and path 
+    file.flatten();
+    //set the appropriate size:
+    file.resizeImage(device[fileDeviceNeeded].width, device[fileDeviceNeeded].height);
+    var jpegOptions = new JPEGSaveOptions();
+    jpegOptions.quality = device[fileDeviceNeeded].quality;
+    //save:
     file.saveAs (saveToFile, jpegOptions, true, Extension.LOWERCASE); // save a copy
     file.activeHistoryState = savedFileState; 
     }
