@@ -1,4 +1,4 @@
-﻿// Copyright 2016. Aliasworlds. All rights reserved.
+// Copyright 2016. Aliasworlds. All rights reserved.
 // This script will save each localized image to a separate file and folder.
 // Locales is based on the layer groups names.
 
@@ -6,11 +6,13 @@
 @@@BUILDINFO@@@ Make Screenshots.jsx 1.0
 */
 
-// enable double clicking from the Macintosh Finder or the Windows Explorer
+// enable double clicking from the Macintosh Finder or the Windows Explorer:
 #target photoshop
+app.bringToFront();
 
 // known devices:
 var device = {
+    'iPhone X': {width: 1125, height: 2436, quality: 8} ,   
     'iPhone 6 Plus': {width: 1242, height: 2208, quality: 8} ,   
     'iPhone 6': {width: 750, height: 1334, quality: 9},
     'iPhone 5': {width: 640, height: 1136, quality: 9},
@@ -90,7 +92,7 @@ function showDialog(fileLanguages){
         checkedLanguage[i].value = true;
         }
     
-    checkedFlatMode = dialog.add("checkbox", undefined, "Don't create locale folders (doesn't work yet)"); // Flat Mode check box - don't create folders
+    checkedFlatMode = dialog.add("checkbox", undefined, "Don't create locale folders"); // Flat Mode check box - don't create folders
     
     dialog.btnGroup = dialog.add("group"); 
     dialog.btnGroup.orientation = 'row';
@@ -244,6 +246,8 @@ function saveLocalizedImagesFlatMode(fileLanguageNeeded, fileDeviceNeeded){
 if (app.documents.length > 0){
     // open documen variables:
     var savedFileState = app.activeDocument.activeHistoryState; // save the file state before processing!
+    //app.activeDocument.duplicate; // create a duplicate
+    app.preferences.rulerUnits = Units.PIXELS; // set units to pixels just in case
     var file = app.activeDocument;
     var fileName =  file.name;
     fileName = fileName.replace(/\..+$/, ''); // cut the extension off
