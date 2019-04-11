@@ -1,4 +1,4 @@
-// Copyright 2016. Aliasworlds. All rights reserved.
+﻿// Copyright 2016. Aliasworlds. All rights reserved.
 // This script will save each localized image to a separate file and folder.
 // Locales is based on the layer groups names.
 
@@ -12,9 +12,10 @@ app.bringToFront();
 
 // known devices:
 var device = {
-    'iPhone X': {width: 1125, height: 2436, quality: 8} ,   
-    'iPhone 6 Plus': {width: 1242, height: 2208, quality: 8} ,   
-    'iPhone 6': {width: 750, height: 1334, quality: 9},
+    'iPhone XR 6.5': {width: 1242, height: 2688, quality: 8} ,   
+    'iPhone X 5.8': {width: 1125, height: 2436, quality: 8} ,   
+    'iPhone 6 Plus 5.5': {width: 1242, height: 2208, quality: 8} ,   
+    'iPhone 6 4.7': {width: 750, height: 1334, quality: 9},
     'iPhone 5': {width: 640, height: 1136, quality: 9},
     'iPhone 4': {width: 640, height: 960, quality: 10}, 
     'iPad':{width: 1536, height: 2048, quality: 9},
