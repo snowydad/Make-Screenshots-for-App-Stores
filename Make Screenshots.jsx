@@ -24,7 +24,7 @@ var device = {
     }; 
 var selectedDevices = []; // devices selected by USER
 
-var knownLanguages = ['EN','RU','DE','FR','NL','ES','IT']; // known languages
+var knownLanguages = ['EN','RU','DE','FR','NL','ES','IT','JP']; // known languages
 var fileLanguages = []; // languages exist in the current file
 var fileLanguagesSets = []; // store all the language layer sets
 var selectedLanguages = []; // languages selected by USER
