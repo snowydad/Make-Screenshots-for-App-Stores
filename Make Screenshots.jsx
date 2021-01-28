@@ -3,7 +3,7 @@
 // Locales is based on the layer groups names.
 
 /*
-@@@BUILDINFO@@@ Make Screenshots.jsx 1.0
+@@@BUILDINFO@@@ Make Screenshots.jsx 2020.11.1
 */
 
 // enable double clicking from the Macintosh Finder or the Windows Explorer:
